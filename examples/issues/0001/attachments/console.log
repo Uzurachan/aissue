@@ -1,0 +1,7 @@
+[2026-07-10T09:12:03.441Z] [info] Navigated to /login
+[2026-07-10T09:12:08.902Z] [info] Viewport resized to 375x812
+[2026-07-10T09:12:15.117Z] [debug] input[name="email"] focus
+[2026-07-10T09:12:19.803Z] [debug] input[name="password"] focus
+[2026-07-10T09:12:22.556Z] [debug] pointerdown target=button#login-submit
+[2026-07-10T09:12:22.560Z] [debug] pointerup target=div.login-overlay
+[2026-07-10T09:12:22.561Z] [warn] click event did not reach #login-submit
