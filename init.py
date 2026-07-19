@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""aissue の初回セットアップスクリプト。
+"""Pearssue の初回セットアップスクリプト。
 
 Issue IDの形式や格納ディレクトリ名などを対話式で決定し、
-`.aissue.json` に設定として書き出す。
+`.pearssue.json` に設定として書き出す。
 """
 
 import json
 import os
 
-CONFIG_PATH = ".aissue.json"
+CONFIG_PATH = ".pearssue.json"
 
 ID_FORMATS = {
     "1": {"name": "sequential", "label": "連番(4桁ゼロ埋め)", "example": "0001, 0002, 0003"},
@@ -41,7 +41,7 @@ def is_inside_repo(path):
 
 
 def main():
-    print("=== aissue セットアップ ===")
+    print("=== Pearssue セットアップ ===")
 
     if os.path.exists(CONFIG_PATH):
         overwrite = ask(f"{CONFIG_PATH} は既に存在します。上書きしますか? (y/N)", default="N")
@@ -53,13 +53,13 @@ def main():
     issues_dir = ask(
         "\nIssueを格納するディレクトリのパス(このリポジトリの外を推奨。"
         "誤コミット防止のため)",
-        default="../aissue-data/issues",
+        default="../pearssue-data/issues",
     )
     if is_inside_repo(issues_dir):
         print(
             f"\n警告: '{issues_dir}' はこのリポジトリの中です。"
             "タスクデータを誤ってこのリポジトリにコミットしてしまう可能性があるため、"
-            "リポジトリの外のパス(例: ../aissue-data/issues)を推奨します。"
+            "リポジトリの外のパス(例: ../pearssue-data/issues)を推奨します。"
         )
     attachments_dir = ask("添付ファイル用のサブディレクトリ名", default="attachments")
 

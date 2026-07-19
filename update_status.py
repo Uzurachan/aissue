@@ -10,7 +10,7 @@ import argparse
 import datetime
 import os
 
-from aissue_common import (
+from pearssue_common import (
     FRONTMATTER_DELIMITER,
     load_config,
     replace_field,

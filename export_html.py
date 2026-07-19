@@ -11,7 +11,7 @@ import argparse
 import datetime
 import html
 
-from aissue_common import collect_issues, issue_sort_key, list_attachments, load_config
+from pearssue_common import collect_issues, issue_sort_key, list_attachments, load_config
 
 VALID_STATUSES = {"new", "processing", "pending", "done"}
 VALID_PRIORITIES = {"high", "medium", "low"}

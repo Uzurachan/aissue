@@ -8,7 +8,7 @@
 import argparse
 import unicodedata
 
-from aissue_common import collect_issues, issue_sort_key, load_config
+from pearssue_common import collect_issues, issue_sort_key, load_config
 
 HEADERS = ["order", "id", "status", "priority", "title"]
 

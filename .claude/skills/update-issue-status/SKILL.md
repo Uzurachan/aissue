@@ -1,11 +1,11 @@
 ---
 name: update-issue-status
-description: このリポジトリ(aissue)でユーザーが「Issue XXXXをdoneにして」「イシューXXXXを完了にして」「あれ保留にして」「完了にした」「対応中にして」のように既存Issueのステータス変更を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。対象Issueを特定し `update_status.py` を呼び出して `index.md` のfrontmatterを更新する。
+description: このリポジトリ(Pearssue)でユーザーが「Issue XXXXをdoneにして」「イシューXXXXを完了にして」「あれ保留にして」「完了にした」「対応中にして」のように既存Issueのステータス変更を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。対象Issueを特定し `update_status.py` を呼び出して `index.md` のfrontmatterを更新する。
 ---
 
 # Issueステータス更新
 
-aissueのステータス値は `new` / `processing` / `pending` / `done` の4つ(lowercase-kebab)。定義は `AGENTS.md` を参照。
+Pearssueのステータス値は `new` / `processing` / `pending` / `done` の4つ(lowercase-kebab)。定義は `AGENTS.md` を参照。
 
 - `new`: 起票直後で未着手
 - `processing`: 対応中

@@ -1,4 +1,4 @@
-# aissue
+# Pearssue（AIと一緒に育てるタスク帳）
 
 人間にもAIエージェントにも読めるMarkdownベースのIssue管理ツール。DBもサーバーも不要で、Gitでそのまま差分管理できる。
 
@@ -12,8 +12,8 @@
 ## クイックスタート
 
 ```sh
-git clone <このリポジトリのURL> aissue
-cd aissue
+git clone <このリポジトリのURL> pearssue
+cd pearssue
 python3 init.py
 ```
 
@@ -74,7 +74,7 @@ echo "## 概要
   --assignee unassigned
 ```
 
-`.aissue.json` の `id_format` に従って次のIDが自動採番され、`<issues_dir>/<id>/index.md` が生成される。
+`.pearssue.json` の `id_format` に従って次のIDが自動採番され、`<issues_dir>/<id>/index.md` が生成される。
 
 ### ステータスを更新する
 
@@ -139,7 +139,7 @@ python3 export_html.py --status processing --output processing.html
 
 ## セットアップ
 
-初回セットアップは対話式スクリプトで行う。Issue IDの形式やデータの保存先を決めて `.aissue.json` に保存する。
+初回セットアップは対話式スクリプトで行う。Issue IDの形式やデータの保存先を決めて `.pearssue.json` に保存する。
 
 ```sh
 python3 init.py
@@ -148,14 +148,14 @@ python3 init.py
 対話で決められること:
 
 - Issue IDの形式(連番 / 日付+連番 / ULID)
-- Issueを格納するディレクトリのパス(デフォルト: `../aissue-data/issues`。このリポジトリの外を推奨)
+- Issueを格納するディレクトリのパス(デフォルト: `../pearssue-data/issues`。このリポジトリの外を推奨)
 - 添付ファイル用のサブディレクトリ名(デフォルト: `attachments`)
 
-`.aissue.json`はリポジトリ内に作られるが`.gitignore`で除外されており、各自がcloneしたら
+`.pearssue.json`はリポジトリ内に作られるが`.gitignore`で除外されており、各自がcloneしたら
 最初に`init.py`を実行して自分のデータ保存先を設定する。リポジトリ内のパスを指定した場合は
 誤コミットのリスクについて警告が出る。
 
-実行すると設定ファイル `.aissue.json` と、Issue格納用ディレクトリが作成される。
+実行すると設定ファイル `.pearssue.json` と、Issue格納用ディレクトリが作成される。
 
 ## 複数プロジェクトを横断してタスク管理する
 
@@ -163,11 +163,11 @@ python3 init.py
 このリポジトリの外(兄弟ディレクトリなど)に置く運用を想定している。
 
 ```
-~/dev/aissue/         <- このリポジトリ(clone)
-~/dev/aissue-data/    <- タスクデータ(init.pyで作成、Git管理外)
+~/dev/pearssue/         <- このリポジトリ(clone)
+~/dev/pearssue-data/    <- タスクデータ(init.pyで作成、Git管理外)
 ```
 
-こうしておくと、複数の別プロジェクトで作業していても常に同じ`aissue-data`を参照でき、
+こうしておくと、複数の別プロジェクトで作業していても常に同じ`pearssue-data`を参照でき、
 かつタスクデータをどこかのプロジェクトリポジトリに誤ってコミットする事故を防げる。
 
 ## もっと詳しく

@@ -1,10 +1,10 @@
-"""aissueの各スクリプトで共有する設定読み込み・frontmatter操作ユーティリティ。"""
+"""Pearssueの各スクリプトで共有する設定読み込み・frontmatter操作ユーティリティ。"""
 
 import json
 import os
 import re
 
-CONFIG_PATH = ".aissue.json"
+CONFIG_PATH = ".pearssue.json"
 
 DEFAULT_CONFIG = {
     "id_format": "sequential",

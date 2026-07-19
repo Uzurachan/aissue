@@ -2,7 +2,7 @@
 
 ## プロジェクト概要
 
-**aissue** は、人間にもAIエージェントにも可読性があるIssue管理ツール。
+**Pearssue** は、人間にもAIエージェントにも可読性があるIssue管理ツール。
 AIがタスクの読み取り・更新・管理を主体的に行えることを前提に設計する。
 
 ## コンセプト
@@ -22,15 +22,15 @@ AIがタスクの読み取り・更新・管理を主体的に行えることを
   - Gitの差分でIssueの変更履歴が自然に追える(コミット単位でIssueの追加・更新・クローズが追跡可能)ことをメリットとして活かす。
   - 実例は `examples/issues/` を参照(`0001/`はバグ報告+ログ添付の例、`0002/`は機能要望+設計メモ添付の例)。
 - **実装言語はPythonに決定。** 外部ライブラリに依存せず標準ライブラリのみで実装する方針(セットアップの敷居を下げるため)。
-- **ツール本体(このリポジトリ)とタスクデータを分離する運用に決定。** 複数のプロジェクト(別々のGitリポジトリ)を横断して1箇所でタスク管理したいという要望から、aissueは1箇所にcloneして使う「ツール一式」とし、実際のIssueデータ(`issues/`)はこのリポジトリの外(例: 兄弟ディレクトリ`../aissue-data/issues`)に置く運用を基本とする。
-  - 誤ってタスクデータをこのリポジトリにコミットしてしまう事故を防ぐのが主目的。`init.py`は`issues_dir`のデフォルトを`../aissue-data/issues`にし、リポジトリ内のパスが指定された場合は警告を出す(強制はしない)。
-  - `.aissue.json`自体は`.gitignore`に含め、各自がcloneした後に`init.py`で自分のデータディレクトリを設定する前提とする。
+- **ツール本体(このリポジトリ)とタスクデータを分離する運用に決定。** 複数のプロジェクト(別々のGitリポジトリ)を横断して1箇所でタスク管理したいという要望から、Pearssueは1箇所にcloneして使う「ツール一式」とし、実際のIssueデータ(`issues/`)はこのリポジトリの外(例: 兄弟ディレクトリ`../pearssue-data/issues`)に置く運用を基本とする。
+  - 誤ってタスクデータをこのリポジトリにコミットしてしまう事故を防ぐのが主目的。`init.py`は`issues_dir`のデフォルトを`../pearssue-data/issues`にし、リポジトリ内のパスが指定された場合は警告を出す(強制はしない)。
+  - `.pearssue.json`自体は`.gitignore`に含め、各自がcloneした後に`init.py`で自分のデータディレクトリを設定する前提とする。
   - 現状は複数プロジェクトのIssueも1つの`issues_dir`直下にフラットに置く(プロジェクトを区別するフィールドやサブディレクトリ分割は未実装、下記TBD参照)。
-- **初回セットアップスクリプト `init.py` を用意。** 対話式でIssue IDの形式(連番 / 日付+連番 / ULID)、Issue格納ディレクトリのパス、添付ファイル用サブディレクトリ名を決め、設定を `.aissue.json` に書き出す。詳細は `README.md` の「セットアップ」を参照。
+- **初回セットアップスクリプト `init.py` を用意。** 対話式でIssue IDの形式(連番 / 日付+連番 / ULID)、Issue格納ディレクトリのパス、添付ファイル用サブディレクトリ名を決め、設定を `.pearssue.json` に書き出す。詳細は `README.md` の「セットアップ」を参照。
 - **Issue作成は「対話(AI/Skill)+ ファイル生成(スクリプト)」の役割分担に決定。**
   - ヒアリングや本文の組み立てはAIエージェント(Claude Codeでは `.claude/skills/create-issue/SKILL.md`)が担当する。ユーザーが「Issueを作って」のように自然言語で依頼した際に発火する想定。
   - ID採番・ディレクトリ作成・frontmatter生成といった機械的な処理は `new_issue.py` に一本化し、AIの解釈揺れによるID重複やフォーマット崩れを防ぐ。
-  - `new_issue.py` は `.aissue.json` の `id_format` に従い次のIDを採番し、`<issues_dir>/<id>/index.md` と `<issues_dir>/<id>/<attachments_dir>/` を生成する(本文は標準入力または `--body-file` で受け取る)。
+  - `new_issue.py` は `.pearssue.json` の `id_format` に従い次のIDを採番し、`<issues_dir>/<id>/index.md` と `<issues_dir>/<id>/<attachments_dir>/` を生成する(本文は標準入力または `--body-file` で受け取る)。
 - **ステータス値は `new` / `processing` / `pending` / `done` の4つに決定。** 表記はlowercase-kebabで統一する。
   - `new`: 起票直後でまだ着手していない
   - `processing`: 対応中
@@ -43,7 +43,7 @@ AIがタスクの読み取り・更新・管理を主体的に行えることを
   - 表示は `list_issues.py` に一本化(デフォルトで`order`昇順表示、`--sort priority|created|id`や`--status`での絞り込みに対応)。ターミナルでの表示は人間向けの整形済みテーブルのみ(JSON出力は現状用意しない)。
   - 並べ替えは `reorder_issues.py` に一本化。`--sequence id1,id2,...` で複数Issueをまとめてこの順に採番するか、`--id <id> --order <n>` で1件だけ調整する。`order`の重複解消(自動リナンバリング)は行わず、同順位は許容してid順で安定表示する。
   - Claude Codeでは `.claude/skills/list-issues/SKILL.md` が「一覧見せて」「Aを先にやって」のような自然言語をヒアリングし、`list_issues.py` / `reorder_issues.py` を呼び出す。
-  - 社外・同僚などへの共有用に `export_html.py` を追加。`list_issues.py` と同じソート・フィルタで、外部依存のない単体HTMLファイル(デフォルト`issues.html`)を出力する。共有はファイルをそのまま渡す想定で、Web公開(Artifact等)は行わない。`collect_issues`/`issue_sort_key`は `aissue_common.py` に集約し、`list_issues.py`と`export_html.py`の両方から使う。
+  - 社外・同僚などへの共有用に `export_html.py` を追加。`list_issues.py` と同じソート・フィルタで、外部依存のない単体HTMLファイル(デフォルト`issues.html`)を出力する。共有はファイルをそのまま渡す想定で、Web公開(Artifact等)は行わない。`collect_issues`/`issue_sort_key`は `pearssue_common.py` に集約し、`list_issues.py`と`export_html.py`の両方から使う。
   - `export_html.py` の一覧テーブルではid列を `#issue-detail-<id>` へのページ内リンクにし、同一ファイル内の `<details>` アコーディオンとして各Issueの詳細(メタデータテーブル・本文・添付ファイル一覧、show-issueと同じ内容)を末尾にまとめて出力する。リンククリック時に対象の`<details>`を確実に開いてスクロールさせるため、最小限のインラインJS(`hashchange`/`DOMContentLoaded`監視)を埋め込む(外部ファイルへの依存はなし)。複数ファイルへの分割は「ファイル1つで渡す」前提を崩すため行わない。
   - 詳細を辿った後に一覧へ戻りやすいよう、右下固定(`position: fixed`)の「Topへ戻る」リンク(`#top`へのアンカー、`scroll-behavior: smooth`でスムーズスクロール)を常時表示する。
 - **Issue1件の詳細表示フォーマットを決定。** 読み取り専用のため、専用ヘルパースクリプトは作らずSkillの指示のみで実現する(`.claude/skills/show-issue/SKILL.md`)。
@@ -66,7 +66,7 @@ AIがタスクの読み取り・更新・管理を主体的に行えることを
 - `README.md`: プロジェクトの簡易説明・セットアップ手順
 - `LICENSE`: MIT License
 - `init.py`: 初回セットアップ用の対話式スクリプト(Python標準ライブラリのみ使用)
-- `aissue_common.py`: 設定読み込み・YAML文字列化・frontmatterの分割/パース/書き換え・Issue収集/ソートなど、各スクリプトで共有するユーティリティ
+- `pearssue_common.py`: 設定読み込み・YAML文字列化・frontmatterの分割/パース/書き換え・Issue収集/ソートなど、各スクリプトで共有するユーティリティ
 - `new_issue.py`: Issueを1件新規作成するヘルパースクリプト(ID採番・ファイル生成を担当)
 - `update_status.py`: 既存Issueのstatus/updatedを書き換えるヘルパースクリプト
 - `reorder_issues.py`: 既存Issueのorder(やる順番)を書き換えるヘルパースクリプト
@@ -77,10 +77,10 @@ AIがタスクの読み取り・更新・管理を主体的に行えることを
 - `.claude/skills/list-issues/SKILL.md`: Claude Code向けの一覧表示・並べ替えSkill。`list_issues.py`/`reorder_issues.py`を呼び出す
 - `.claude/skills/show-issue/SKILL.md`: Claude Code向けのIssue詳細表示Skill。ヘルパースクリプトなしで出力フォーマットのみ定義する
 - `examples/issues/`: Issueディレクトリ構成のサンプル(`0001/`, `0002/`など)
-- `.aissue.json`: `init.py` 実行後に生成される設定ファイル(id_format, issues_dir, attachments_dir)。`issues_dir`は通常リポジトリの外を指すため`.gitignore`で除外している
+- `.pearssue.json`: `init.py` 実行後に生成される設定ファイル(id_format, issues_dir, attachments_dir)。`issues_dir`は通常リポジトリの外を指すため`.gitignore`で除外している
 
 ## コーディング規約
 
 - Python標準ライブラリのみを使用し、外部パッケージへの依存を追加しない(現時点の方針)。
 - スクリプトは対話的な実行(`python3 init.py` など)を前提にシンプルに保ち、過度な抽象化・オプション追加は避ける。
-- 複数スクリプトで使う設定読み込み・frontmatter操作等のロジックは `aissue_common.py` に集約し、重複させない。
+- 複数スクリプトで使う設定読み込み・frontmatter操作等のロジックは `pearssue_common.py` に集約し、重複させない。

@@ -1,15 +1,15 @@
 ---
 name: create-issue
-description: このリポジトリ(aissue)でユーザーが「Issueを作って」「イシューを作って」「バグ報告したい」「タスクを登録して」「機能要望を追加して」のように新規Issue作成を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。対話でヒアリングした内容をもとに `new_issue.py` を呼び出し、`issues/<id>/index.md`(と必要なら添付ファイル)を生成する。
+description: このリポジトリ(Pearssue)でユーザーが「Issueを作って」「イシューを作って」「バグ報告したい」「タスクを登録して」「機能要望を追加して」のように新規Issue作成を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。対話でヒアリングした内容をもとに `new_issue.py` を呼び出し、`issues/<id>/index.md`(と必要なら添付ファイル)を生成する。
 ---
 
 # Issue作成
 
-aissueは人間にもAIにも可読なMarkdownベースのIssue管理ツール。設計方針・frontmatterスキーマの原典は `AGENTS.md` を参照。このSkillは、ユーザーとの対話でIssue内容を詰め、実際のファイル生成は `new_issue.py` に任せることでID採番ミスやフォーマット崩れを防ぐ。
+Pearssueは人間にもAIにも可読なMarkdownベースのIssue管理ツール。設計方針・frontmatterスキーマの原典は `AGENTS.md` を参照。このSkillは、ユーザーとの対話でIssue内容を詰め、実際のファイル生成は `new_issue.py` に任せることでID採番ミスやフォーマット崩れを防ぐ。
 
 ## 前提確認
 
-1. リポジトリ直下に `.aissue.json` があるか確認する。なければ `python3 init.py` を先に実行するようユーザーに提案する(初回セットアップが未実施のため)。
+1. リポジトリ直下に `.pearssue.json` があるか確認する。なければ `python3 init.py` を先に実行するようユーザーに提案する(初回セットアップが未実施のため)。
 
 ## ヒアリング
 
@@ -44,10 +44,10 @@ python3 new_issue.py \
 ```
 
 3. 標準出力に表示される作成された `index.md` のパスを確認する。
-4. 添付ファイルがある場合は、そのIssueディレクトリ内の `attachments/`(`.aissue.json` の `attachments_dir` で設定されたディレクトリ名)にファイルを配置する。
+4. 添付ファイルがある場合は、そのIssueディレクトリ内の `attachments/`(`.pearssue.json` の `attachments_dir` で設定されたディレクトリ名)にファイルを配置する。
 5. 作成したIssueのパスと内容の要約をユーザーに報告する。
 
 ## 注意点
 
-- Issue ID・ディレクトリ作成・frontmatter生成は必ず `new_issue.py` を通して行う(手でファイルを作らない)。IDの採番方式は `.aissue.json` の `id_format` に従う。
+- Issue ID・ディレクトリ作成・frontmatter生成は必ず `new_issue.py` を通して行う(手でファイルを作らない)。IDの採番方式は `.pearssue.json` の `id_format` に従う。
 - titleや本文に日本語・記号(コロンなど)が含まれても `new_issue.py` 側でYAML的に安全な形にエスケープされるため、そのまま渡してよい。

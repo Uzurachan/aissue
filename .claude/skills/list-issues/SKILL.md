@@ -1,11 +1,11 @@
 ---
 name: list-issues
-description: このリポジトリ(aissue)でユーザーが「Issue一覧見せて」「イシュー一覧見せて」「今何がある?」「やる順番教えて」「Aを先にやって」「これを一番にして」「同僚に共有できる形にして」「HTMLで書き出して」のように一覧表示・優先順位の並べ替え・共有用ファイルの出力を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。`list_issues.py` で一覧表示、`reorder_issues.py` で `order` フィールドを書き換え、`export_html.py` で共有用HTMLファイルを出力する。
+description: このリポジトリ(Pearssue)でユーザーが「Issue一覧見せて」「イシュー一覧見せて」「今何がある?」「やる順番教えて」「Aを先にやって」「これを一番にして」「同僚に共有できる形にして」「HTMLで書き出して」のように一覧表示・優先順位の並べ替え・共有用ファイルの出力を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。`list_issues.py` で一覧表示、`reorder_issues.py` で `order` フィールドを書き換え、`export_html.py` で共有用HTMLファイルを出力する。
 ---
 
 # Issue一覧・並べ替え
 
-aissueのIssueは `order`(やる順番、数値。小さいほど先)というfrontmatterフィールドを持つ。未設定は `null` で、一覧では末尾かつ `-` 表示になる。定義は `AGENTS.md` を参照。
+PearssueのIssueは `order`(やる順番、数値。小さいほど先)というfrontmatterフィールドを持つ。未設定は `null` で、一覧では末尾かつ `-` 表示になる。定義は `AGENTS.md` を参照。
 
 ## 一覧表示
 

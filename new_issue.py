@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Issueを1件新規作成するヘルパースクリプト。
 
-`.aissue.json` の設定(id_format, issues_dir, attachments_dir)に従って
+`.pearssue.json` の設定(id_format, issues_dir, attachments_dir)に従って
 次のIssue IDを採番し、`<issues_dir>/<id>/index.md` と
 `<issues_dir>/<id>/<attachments_dir>/` を生成する。
 
@@ -15,7 +15,7 @@ import os
 import random
 import sys
 
-from aissue_common import load_config, yaml_str
+from pearssue_common import load_config, yaml_str
 
 _CROCKFORD_BASE32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
