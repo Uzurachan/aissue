@@ -1,6 +1,6 @@
 ---
 name: create-issue
-description: このリポジトリ(aissue)でユーザーが「Issueを作って」「バグ報告したい」「タスクを登録して」「機能要望を追加して」のように新規Issue作成を依頼したときに使う。対話でヒアリングした内容をもとに `new_issue.py` を呼び出し、`issues/<id>/index.md`(と必要なら添付ファイル)を生成する。
+description: このリポジトリ(aissue)でユーザーが「Issueを作って」「イシューを作って」「バグ報告したい」「タスクを登録して」「機能要望を追加して」のように新規Issue作成を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。対話でヒアリングした内容をもとに `new_issue.py` を呼び出し、`issues/<id>/index.md`(と必要なら添付ファイル)を生成する。
 ---
 
 # Issue作成

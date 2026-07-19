@@ -1,6 +1,6 @@
 ---
 name: update-issue-status
-description: このリポジトリ(aissue)でユーザーが「Issue XXXXをdoneにして」「あれ保留にして」「完了にした」「対応中にして」のように既存Issueのステータス変更を依頼したときに使う。対象Issueを特定し `update_status.py` を呼び出して `index.md` のfrontmatterを更新する。
+description: このリポジトリ(aissue)でユーザーが「Issue XXXXをdoneにして」「イシューXXXXを完了にして」「あれ保留にして」「完了にした」「対応中にして」のように既存Issueのステータス変更を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。対象Issueを特定し `update_status.py` を呼び出して `index.md` のfrontmatterを更新する。
 ---
 
 # Issueステータス更新

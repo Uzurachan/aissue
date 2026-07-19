@@ -76,3 +76,24 @@ python3 reorder_issues.py --sequence 0003,0001,0002
 # 1件だけorderを調整する
 python3 reorder_issues.py --id 0001 --order 1
 ```
+
+## Issueの詳細表示
+
+**Claude Codeを使っている場合**は、「Issue 0001の詳細見せて」「一番上のissue見せて」のように話しかけるだけでよい。
+`.claude/skills/show-issue/SKILL.md` が発火し、決まったフォーマット(メタデータテーブル→本文→添付ファイル一覧)で表示する。読み取り専用のため専用スクリプトはなく、`index.md`をそのまま読んで表示する。
+
+## 同僚への共有(HTML出力)
+
+一覧を同僚などにファイルとしてそのまま渡したい場合は、外部依存のない単体HTMLファイルを出力できる。
+
+**Claude Codeを使っている場合**は、「同僚に共有できる形にして」「HTMLで書き出して」のように話しかけるだけでよい。
+`.claude/skills/list-issues/SKILL.md` が発火し、`export_html.py` を実行する。
+
+**手動で出力する場合**:
+
+```sh
+python3 export_html.py --output issues.html
+python3 export_html.py --status processing --output processing.html
+```
+
+`list_issues.py` と同じ `--sort` / `--status` オプションが使える。生成された `issues.html` はブラウザで開けるほか、メールやチャットでそのまま送って共有できる。

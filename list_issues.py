@@ -6,12 +6,9 @@
 """
 
 import argparse
-import os
 import unicodedata
 
-from aissue_common import load_config, read_issue
-
-PRIORITY_ORDER = {"high": 0, "medium": 1, "low": 2}
+from aissue_common import collect_issues, issue_sort_key, load_config
 
 HEADERS = ["order", "id", "status", "priority", "title"]
 
@@ -30,34 +27,6 @@ def pad(text, width):
     return text + " " * max(0, width - display_width(text))
 
 
-def collect_issues(issues_dir):
-    issues = []
-    if not os.path.isdir(issues_dir):
-        return issues
-    for name in sorted(os.listdir(issues_dir)):
-        index_path = os.path.join(issues_dir, name, "index.md")
-        if not os.path.isfile(index_path):
-            continue
-        data = read_issue(index_path)
-        data.setdefault("id", name)
-        issues.append(data)
-    return issues
-
-
-def sort_key(sort_by):
-    def key(issue):
-        if sort_by == "order":
-            order = issue.get("order")
-            return (0, order) if isinstance(order, int) else (1, str(issue.get("id", "")))
-        if sort_by == "priority":
-            return PRIORITY_ORDER.get(issue.get("priority"), 99)
-        if sort_by == "created":
-            return issue.get("created") or ""
-        return str(issue.get("id", ""))
-
-    return key
-
-
 def main():
     parser = argparse.ArgumentParser(description="Issue一覧を表示する")
     parser.add_argument(
@@ -73,7 +42,7 @@ def main():
     if args.status:
         issues = [i for i in issues if i.get("status") == args.status]
 
-    issues.sort(key=sort_key(args.sort))
+    issues.sort(key=issue_sort_key(args.sort))
 
     if not issues:
         print("Issueが見つかりません。")

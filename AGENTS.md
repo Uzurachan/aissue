@@ -36,9 +36,13 @@ AIがタスクの読み取り・更新・管理を主体的に行えることを
   - ステータス更新も作成と同様に「対話(AI/Skill)+ ファイル更新(スクリプト)」の役割分担とする。Claude Codeでは `.claude/skills/update-issue-status/SKILL.md` が対象Issueの特定とstatus判断を担当し、実際のfrontmatter書き換えは `update_status.py` に一本化する(`--note` で変更理由を本文末尾に追記可能)。
 - **一覧表示・優先順位付けのため `order` フィールドを追加。**
   - `order` は「やる順番」を表す整数(小さいほど先)。未設定は `null`(新規作成直後のデフォルト)で、一覧では末尾かつ `-` 表示になる。
-  - 表示は `list_issues.py` に一本化(デフォルトで`order`昇順表示、`--sort priority|created|id`や`--status`での絞り込みに対応)。出力は人間向けの整形済みテーブルのみ(JSON出力は現状用意しない)。
+  - 表示は `list_issues.py` に一本化(デフォルトで`order`昇順表示、`--sort priority|created|id`や`--status`での絞り込みに対応)。ターミナルでの表示は人間向けの整形済みテーブルのみ(JSON出力は現状用意しない)。
   - 並べ替えは `reorder_issues.py` に一本化。`--sequence id1,id2,...` で複数Issueをまとめてこの順に採番するか、`--id <id> --order <n>` で1件だけ調整する。`order`の重複解消(自動リナンバリング)は行わず、同順位は許容してid順で安定表示する。
   - Claude Codeでは `.claude/skills/list-issues/SKILL.md` が「一覧見せて」「Aを先にやって」のような自然言語をヒアリングし、`list_issues.py` / `reorder_issues.py` を呼び出す。
+  - 社外・同僚などへの共有用に `export_html.py` を追加。`list_issues.py` と同じソート・フィルタで、外部依存のない単体HTMLファイル(デフォルト`issues.html`)を出力する。共有はファイルをそのまま渡す想定で、Web公開(Artifact等)は行わない。`collect_issues`/`issue_sort_key`は `aissue_common.py` に集約し、`list_issues.py`と`export_html.py`の両方から使う。
+- **Issue1件の詳細表示フォーマットを決定。** 読み取り専用のため、専用ヘルパースクリプトは作らずSkillの指示のみで実現する(`.claude/skills/show-issue/SKILL.md`)。
+  - 表示順は「見出し(`# <id>: <title>`)→ メタデータテーブル(status/priority/tags/assignee/order/created/updated)→ 本文をそのまま(要約・加工しない)→ 添付ファイル一覧」。
+  - 添付ファイル一覧は `attachments/` を実スキャンし、`` - `ファイル名`(簡潔な説明) `` の形式でリスト表示する。中身は表示しない。
 - 今後の実装は、上記コンセプトを満たすかどうかを判断基準にする。
 - 大きな設計判断をする際は、目的・前提・範囲・長期的な影響を一段引いて見直すこと。
 
@@ -55,14 +59,16 @@ AIがタスクの読み取り・更新・管理を主体的に行えることを
 - `README.md`: プロジェクトの簡易説明・セットアップ手順
 - `LICENSE`: MIT License
 - `init.py`: 初回セットアップ用の対話式スクリプト(Python標準ライブラリのみ使用)
-- `aissue_common.py`: 設定読み込み・YAML文字列化・frontmatterの分割/パース/書き換えなど、各スクリプトで共有するユーティリティ
+- `aissue_common.py`: 設定読み込み・YAML文字列化・frontmatterの分割/パース/書き換え・Issue収集/ソートなど、各スクリプトで共有するユーティリティ
 - `new_issue.py`: Issueを1件新規作成するヘルパースクリプト(ID採番・ファイル生成を担当)
 - `update_status.py`: 既存Issueのstatus/updatedを書き換えるヘルパースクリプト
 - `reorder_issues.py`: 既存Issueのorder(やる順番)を書き換えるヘルパースクリプト
 - `list_issues.py`: Issue一覧をテーブル表示するスクリプト(ソート・statusフィルタ対応)
+- `export_html.py`: Issue一覧を共有用の単体HTMLファイルとして出力するスクリプト
 - `.claude/skills/create-issue/SKILL.md`: Claude Code向けのIssue作成Skill。自然言語での依頼をヒアリングし `new_issue.py` を呼び出す
 - `.claude/skills/update-issue-status/SKILL.md`: Claude Code向けのステータス更新Skill。対象Issueとstatusを判断し `update_status.py` を呼び出す
 - `.claude/skills/list-issues/SKILL.md`: Claude Code向けの一覧表示・並べ替えSkill。`list_issues.py`/`reorder_issues.py`を呼び出す
+- `.claude/skills/show-issue/SKILL.md`: Claude Code向けのIssue詳細表示Skill。ヘルパースクリプトなしで出力フォーマットのみ定義する
 - `examples/issues/`: Issueディレクトリ構成のサンプル(`0001/`, `0002/`など)
 - `.aissue.json`: `init.py` 実行後に生成される設定ファイル(id_format, issues_dir, attachments_dir)
 

@@ -1,6 +1,6 @@
 ---
 name: list-issues
-description: このリポジトリ(aissue)でユーザーが「Issue一覧見せて」「今何がある?」「やる順番教えて」「Aを先にやって」「これを一番にして」のように一覧表示や優先順位の並べ替えを依頼したときに使う。`list_issues.py` で一覧表示し、`reorder_issues.py` で `order` フィールドを書き換える。
+description: このリポジトリ(aissue)でユーザーが「Issue一覧見せて」「イシュー一覧見せて」「今何がある?」「やる順番教えて」「Aを先にやって」「これを一番にして」「同僚に共有できる形にして」「HTMLで書き出して」のように一覧表示・優先順位の並べ替え・共有用ファイルの出力を依頼したときに使う。「Issue」「issue」「イシュー」いずれの表記でも発火する。`list_issues.py` で一覧表示、`reorder_issues.py` で `order` フィールドを書き換え、`export_html.py` で共有用HTMLファイルを出力する。
 ---
 
 # Issue一覧・並べ替え
@@ -34,6 +34,18 @@ python3 reorder_issues.py --id <id> --order <n>
 ```
 
 4. 並べ替え後は `python3 list_issues.py` で結果を再表示し、意図した順序になっているかユーザーと確認する。
+
+## 共有用HTMLファイルの出力
+
+ユーザーが「同僚に共有したい」「ファイルとして渡したい」「HTMLにして」のように言った場合は、テーブル表示ではなく `export_html.py` で単体のHTMLファイルを生成する:
+
+```sh
+python3 export_html.py --output issues.html
+```
+
+- `list_issues.py` と同じ `--sort` / `--status` オプションが使える。
+- 出力される `issues.html` は外部依存のない自己完結ファイルなので、そのままメールやチャットで送ったりファイル共有すればよい。
+- 生成後、出力パスをユーザーに伝える(必要ならブラウザで開いて内容を確認してもよい)。
 
 ## 注意点
 

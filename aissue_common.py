@@ -102,3 +102,37 @@ def read_issue(index_path):
         text = f.read()
     frontmatter, _ = split_frontmatter(text)
     return parse_frontmatter(frontmatter)
+
+
+PRIORITY_ORDER = {"high": 0, "medium": 1, "low": 2}
+
+
+def collect_issues(issues_dir):
+    """issues_dir配下の全Issueのfrontmatterをdictのリストとして返す(id順)。"""
+    issues = []
+    if not os.path.isdir(issues_dir):
+        return issues
+    for name in sorted(os.listdir(issues_dir)):
+        index_path = os.path.join(issues_dir, name, "index.md")
+        if not os.path.isfile(index_path):
+            continue
+        data = read_issue(index_path)
+        data.setdefault("id", name)
+        issues.append(data)
+    return issues
+
+
+def issue_sort_key(sort_by):
+    """`issues.sort(key=issue_sort_key(sort_by))` として使うキー関数を返す。"""
+
+    def key(issue):
+        if sort_by == "order":
+            order = issue.get("order")
+            return (0, order) if isinstance(order, int) else (1, str(issue.get("id", "")))
+        if sort_by == "priority":
+            return PRIORITY_ORDER.get(issue.get("priority"), 99)
+        if sort_by == "created":
+            return issue.get("created") or ""
+        return str(issue.get("id", ""))
+
+    return key
